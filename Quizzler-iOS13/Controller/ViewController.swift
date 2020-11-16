@@ -17,31 +17,27 @@ class ViewController: UIViewController {
     @IBAction func answerButtonPressed(_ sender: UIButton) {
         
         let userAnswer = sender.currentTitle! //True or False
-        quizBrain.checkAnswer(userAnswer)
+        let userGotItRight = quizBrain.checkAnswer(userAnswer) //capturing the answer user put aka(true or false)
         
-        if userAnswer == actualAnswer { //if they got it right
+        if userGotItRight { //if they got it right
             sender.backgroundColor = UIColor.green //change the color to green if its right
         } else { //if its wrong
             sender.backgroundColor = UIColor.red //changing the color to red if its wrong
         }
         
-        
-        if questionNumber + 1 < quiz.count {
-            questionNumber += 1
-        } else {
-            questionNumber = 0
-        }
-        
+        quizBrain.nextQuestion()
         Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(updateUI), userInfo: nil, repeats: false)
         
     }
     
     @objc func updateUI() { //func that shows which question is showing
-        questionLabel.text = quiz[questionNumber].text
+        questionLabel.text = quizBrain.getQuestionText() //look quizbrain
+        progressBar.progress = quizBrain.getProgress() //from quizbrain
+        
         trueButton.backgroundColor = UIColor.clear
         falseButton.backgroundColor = UIColor.clear
         
-        progressBar.progress = Float(questionNumber + 1) / Float(quiz.count)
+        
     }
 }
 
