@@ -34,10 +34,10 @@ class ViewController: UIViewController {
         let userAnswer = sender.currentTitle //True or False
         let actualAnswer = quiz[questionNumber].answer
         
-        if userAnswer == actualAnswer {
-            print("Right answer!")
-        } else {
-            print("Wrong Answer")
+        if userAnswer == actualAnswer { //if they got it right
+            sender.backgroundColor = UIColor.green //change the color to green if its right
+        } else { //if its wrong
+            sender.backgroundColor = UIColor.red //changing the color to red if its wrong
         }
         
         if questionNumber + 1 < quiz.count {
@@ -45,11 +45,17 @@ class ViewController: UIViewController {
         } else {
             questionNumber = 0
         }
-        updateUI() //func below
+        
+        Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(updateUI), userInfo: nil, repeats: false)
+        
     }
     
-    func updateUI() { //func that shows which question is showing
+    @objc func updateUI() { //func that shows which question is showing
         questionLabel.text = quiz[questionNumber].text
+        trueButton.backgroundColor = UIColor.clear
+        falseButton.backgroundColor = UIColor.clear
+        
+        progressBar.progress = Float(questionNumber + 1) / Float(quiz.count)
     }
 }
 
